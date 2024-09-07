@@ -1,0 +1,178 @@
+-- Criar ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.IgnoreGuiInset = true
+
+-- Fundo translúcido e estilizado
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundTransparency = 0.2
+background.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+background.Parent = screenGui
+
+-- Container centralizado para os elementos
+local container = Instance.new("Frame")
+container.Size = UDim2.new(0, 400, 0, 300)
+container.Position = UDim2.new(0.5, -200, 0.5, -150)
+container.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+container.BorderSizePixel = 0
+container.BackgroundTransparency = 0.05
+container.Parent = screenGui
+
+-- Adicionar bordas arredondadas no container com raio de 15
+local containerCorner = Instance.new("UICorner")
+containerCorner.CornerRadius = UDim.new(0, 15)
+containerCorner.Parent = container
+
+-- Efeito de sombra suave no container
+local containerShadow = Instance.new("ImageLabel")
+containerShadow.Size = UDim2.new(1, 30, 1, 30)
+containerShadow.Position = UDim2.new(0, -15, 0, -15)
+containerShadow.BackgroundTransparency = 1
+containerShadow.Image = "rbxassetid://1316045217"
+containerShadow.ImageTransparency = 0.7
+containerShadow.ZIndex = 0
+containerShadow.Parent = container
+
+-- Título estilizado
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Position = UDim2.new(0, 0, 0, 10)
+title.Text = "Autenticação por Chave"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 26
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.BackgroundTransparency = 1
+title.Parent = container
+
+-- Caixa de entrada para a chave estilizada
+local keyBox = Instance.new("TextBox")
+keyBox.Size = UDim2.new(0, 300, 0, 50)
+keyBox.Position = UDim2.new(0.5, -150, 0.4, 0)
+keyBox.PlaceholderText = "Insira sua chave"
+keyBox.Text = ""
+keyBox.Font = Enum.Font.Gotham
+keyBox.TextSize = 18
+keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+keyBox.BorderSizePixel = 0
+keyBox.TextXAlignment = Enum.TextXAlignment.Center
+keyBox.TextYAlignment = Enum.TextYAlignment.Center
+keyBox.BackgroundTransparency = 0.2
+keyBox.ClipsDescendants = true
+keyBox.Parent = container
+
+-- Adicionar bordas arredondadas na caixa de texto com raio de 15
+local keyBoxCorner = Instance.new("UICorner")
+keyBoxCorner.CornerRadius = UDim.new(0, 15)
+keyBoxCorner.Parent = keyBox
+
+-- Botão de verificação estilizado
+local verifyButton = Instance.new("TextButton")
+verifyButton.Size = UDim2.new(0, 150, 0, 50)
+verifyButton.Position = UDim2.new(0.5, -75, 0.7, 0)
+verifyButton.Text = "Verificar"
+verifyButton.Font = Enum.Font.Gotham
+verifyButton.TextSize = 18
+verifyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+verifyButton.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+verifyButton.BorderSizePixel = 0
+verifyButton.BackgroundTransparency = 0.2
+verifyButton.ClipsDescendants = true
+verifyButton.Parent = container
+
+-- Adicionar bordas arredondadas ao botão com raio de 15
+local verifyButtonCorner = Instance.new("UICorner")
+verifyButtonCorner.CornerRadius = UDim.new(0, 15)
+verifyButtonCorner.Parent = verifyButton
+
+-- Efeito de hover e click no botão com animações suaves
+verifyButton.MouseEnter:Connect(function()
+    verifyButton:TweenSizeAndPosition(UDim2.new(0, 160, 0, 55), verifyButton.Position, Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2)
+    verifyButton.BackgroundColor3 = Color3.fromRGB(95, 95, 95)
+end)
+
+verifyButton.MouseLeave:Connect(function()
+    verifyButton:TweenSizeAndPosition(UDim2.new(0, 150, 0, 50), verifyButton.Position, Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2)
+    verifyButton.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+end)
+
+verifyButton.MouseButton1Down:Connect(function()
+    verifyButton.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+end)
+
+verifyButton.MouseButton1Up:Connect(function()
+    verifyButton.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+end)
+
+-- Mensagem de resultado estilizada
+local resultMessage = Instance.new("TextLabel")
+resultMessage.Size = UDim2.new(0, 300, 0, 50)
+resultMessage.Position = UDim2.new(0.5, -150, 0.9, 0)
+resultMessage.Text = ""
+resultMessage.Font = Enum.Font.Gotham
+resultMessage.TextSize = 18
+resultMessage.TextColor3 = Color3.fromRGB(255, 70, 70)
+resultMessage.BackgroundTransparency = 1
+resultMessage.Parent = container
+
+-- Função para copiar texto para a área de transferência
+local function copyToClipboard(text)
+    setclipboard(text)
+end
+
+-- Função para fechar a UI de autenticação
+local function closeUI()
+    screenGui:Destroy()
+end
+
+-- Função para mostrar a notificação e ocultar após 3 segundos
+local function showNotification(message, color, callback)
+    resultMessage.Text = message
+    resultMessage.TextColor3 = color
+    resultMessage.TextTransparency = 0
+    
+    -- Aguarda 3 segundos antes de sumir a notificação
+    wait(3)
+    
+    -- Suavemente faz a notificação desaparecer
+    for i = 0, 1, 0.1 do
+        resultMessage.TextTransparency = i
+        wait(0.05)
+    end
+    
+    -- Executa a função de callback após a notificação sumir
+    if callback then
+        callback()
+    end
+end
+
+-- Script de verificação de chave
+local validKey = "SUA_CHAVE_AQUI"  -- Substitua por sua chave válida
+local linkParaCopiar = "https://exemplo.com"  -- Coloque o link que deseja copiar quando a chave estiver errada
+
+verifyButton.MouseButton1Click:Connect(function()
+    if keyBox.Text == validKey then
+        -- Mostrar notificação de sucesso e depois executar o script
+        showNotification("Chave válida! Executando o script...", Color3.fromRGB(70, 255, 70), function()
+            -- Fechar a UI antes de executar o script
+            closeUI()
+            -- Executar o script se a chave for válida
+            local success, err = pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/joaoluisnews/rblx-script/main/hub"))()
+
+            end)
+            if success then
+                print("Script executado com sucesso.")
+            else
+                warn("Erro ao executar o script: ", err)
+            end
+        end)
+    else
+        -- Mostrar notificação de chave inválida e copiar link para o clipboard
+        showNotification("Chave inválida! Link copiado.", Color3.fromRGB(255, 70, 70), function()
+            -- Copiar link para o clipboard
+            copyToClipboard(linkParaCopiar)
+        end)
+    end
+end)
