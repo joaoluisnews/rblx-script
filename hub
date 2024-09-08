@@ -1,62 +1,113 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
+-- Notificação
 OrionLib:MakeNotification({
-	Name = "Orion Example",
-	Content = "Orion Example",
-	Image = "rbxassetid://4483345998",
-	Time = 5
+    Name = "Notification",
+    Content = "Welcome to RBLX SCRIPT Hub!",
+    Image = "rbxassetid://7072718364",  -- Ícone de notificação
+    Time = 5
 })
 
-
-local Window = OrionLib:MakeWindow({Name = "Orion Example", HidePremium = false, SaveConfig = true, ConfigFolder = "Orion"})
-
---Player Tab--
-
-local PlayerTab = Window:MakeTab({
-	Name = "Player",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+-- Janela principal com mensagem de carregamento e ícone
+local Window = OrionLib:MakeWindow({
+    Name = "RBLX SCRIPT",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "RBLXScripts",
+    IntroText = "Loading RBLX SCRIPT...",  -- Texto enquanto carrega
+    IntroIcon = "rbxassetid://7072718364",  -- Ícone de carregamento
+    LoadingTitle = "Loading RBLX SCRIPT",  -- Título enquanto carrega
+    LoadingSubtitle = "Please wait...",    -- Subtítulo enquanto carrega
+    LoadingIcon = "rbxassetid://7072718364" -- Ícone de carregamento
 })
 
-local PlayerSection = PlayerTab:AddSection({
-	Name = "Player"
-})
+local tabs = {
+    ["Blade Ball"] = {
+        {Name = "Bedol V2", Script = "https://raw.githubusercontent.com/3345-c-a-t-s-u-s/-beta-/main/AutoParry.lua"},
+        {Name = "Zap Hub", Script = "https://www.zaphub.xyz/Exec"},
+        {Name = "Darkrai", Script = "https://pastefy.app/scPne8wv/raw"}
+    },
+    ["Pass The Bomb"] = {
+        {Name = "Pass The Bomb OCFI", Script = "https://rawscripts.net/raw/SKINS-+-CODE-Pass-the-Bomb!-Bomb-Ocfi-Script-V2-16703"}
+    },
+    ["Blox Fruits"] = {
+        {Name = "Apple Hub", Script = "https://raw.githubusercontent.com/ImTienNguyenZ/AppleHubOnTop/main/Loader.lua"},
+        {Name = "W Azure", Script = "https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua"}
+    },
+    ["Doors"] = {
+        {Name = "Dark Cheat", Script = "https://raw.githubusercontent.com/VaniaPerets/FolderGui-FolderHub/main/loader.lua"},
+        {Name = "Black King", Script = "https://raw.githubusercontent.com/gikkax/new/main/77_ECEKVGC.lua"},
+        {Name = "GigaChad Hub V3", Script = "https://raw.githubusercontent.com/OWJBWKQLAISH/GigaChad-Hub/main/GigaChad%20Hub%20V2"}
+    },
+    ["Anime Defenders"] = {
+        {Name = "NUTellaVING", Script = "https://raw.githubusercontent.com/NUTellaVING/Survive/main/Loader.lua"}
+    },
+    ["Pet Simulator 99"] = {
+        {Name = "AppleHub", Script = "https://raw.githubusercontent.com/ImTienNguyenZ/AppleHubOnTop/main/Loader.lua"},
+        {Name = "Zap Hub", Script = "https://www.zaphub.xyz/Exec"}
+    },
+    ["Car Dealership Tycoon"] = {
+        {Name = "Ultimate Hub", Script = "https://raw.githubusercontent.com/mikeblazex/Mikeexc7491/main/Mike99118"}
+    },
+    ["MM2"] = {
+        {Name = "Mikeexc", Script = "https://raw.githubusercontent.com/mikeblazex/Mikeexc7491/main/Mike99118"}
+    },
+    ["Build A Boat For Treasure"] = {
+        {Name = "Mikeblazex", Script = "https://raw.githubusercontent.com/mikeblazex/Mikeexc7491/main/Mike99118"}
+    }
+}
 
+-- Aba Universal primeiro
+local universalTab = {
+    ["Universal"] = {
+        {Name = "Infinite Yield", Script = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"},
+        {Name = "GameHub V5", Script = "https://raw.githubusercontent.com/GamerScripter/Game-Hub/main/loader"},
+        {Name = "Scarlart", Script = "https://raw.githubusercontent.com/scarlet1837/a/main/Tpwalk"}
+    }
+}
 
-PlayerSection:AddSlider({
-	Name = "Walkspeed",
-	Min = 16,
-	Max = 100,
-	Default = 5,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Walkspeed",
-	Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-	end    
-})
+-- Criar aba Universal primeiro
+for tabName, scripts in pairs(universalTab) do
+    local Tab = Window:MakeTab({
+        Name = tabName,
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+    
+    for _, scriptData in ipairs(scripts) do
+        local Section = Tab:AddSection({
+            Name = scriptData.Name
+        })
+        
+        Section:AddButton({
+            Name = scriptData.Name,
+            Callback = function()
+                loadstring(game:HttpGet(scriptData.Script))()
+            end
+        })
+    end
+end
 
---Player Tab End--
+-- Criar as outras abas
+for tabName, scripts in pairs(tabs) do
+    local Tab = Window:MakeTab({
+        Name = tabName,
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+    
+    for _, scriptData in ipairs(scripts) do
+        local Section = Tab:AddSection({
+            Name = scriptData.Name
+        })
+        
+        Section:AddButton({
+            Name = scriptData.Name,
+            Callback = function()
+                loadstring(game:HttpGet(scriptData.Script))()
+            end
+        })
+    end
+end
 
---Settings Tab--
-
-local SettingsTab = Window:MakeTab({
-	Name = "Settings",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-
-local SettingsSection = SettingsTab:AddSection({
-	Name = "Settings"
-})
-
-SettingsSection:AddButton({
-	Name = "Destroy UI",
-	Callback = function()
-        OrionLib:Destroy()
-  	end    
-})
-
---Settings End--
-
-OrionLib:Init() --UI Lib End
+OrionLib:Init() -- UI Lib End
